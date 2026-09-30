@@ -83,16 +83,16 @@ Tudo está em um único arquivo, `lib/main.dart`:
 
 ---
 
-## 4. Quem fez o quê
+## 4. Quem fez o quê?
 
 | Integrante | Papéis |
 |---|---|
 | **Arthur** | Construtor + Designer de interface |
-| **Janiele** | Relator |
+| **Janiele** |  Construtor + Relator |
 
-### 🛠️ Arthur - Construtor (lógica e estado)
+### 🛠️ Arthur e Janiele - Construtor (lógica e estado)
 
-Responsável por como o app reage e pelas escolhas técnicas.
+Responsáveis por como o app reage e pelas escolhas técnicas.
 
 - **Estado com `StatefulWidget` e `setState`**: a lista de leituras (`_registros`), a mensagem de erro (`_erro`) e a mensagem de feedback do campo (`_mensagemChuva`) mudam durante o uso, então a tela precisa ser reconstruída a cada mudança.
 - **Acumulado com `fold`**: o total é um getter que percorre a lista somando os milímetros.
