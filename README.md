@@ -1,4 +1,4 @@
-# 🌧️ Caderno de Campo do Vale — Registro de Chuva
+# 🌧️ Caderno de Campo do Vale - Registro de Chuva
 
 Pluviômetro digital feito em Flutter. O produtor anota a chuva medida a cada dia e o app mostra, na hora, o **acumulado** e a **média** do período.
 
