@@ -19,7 +19,9 @@ class CadernoDoValeApp extends StatelessWidget {
 
       // Aqui eu defini o tema verde do aplicativo.
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2E7D32)),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF2E7D32),
+        ),
         useMaterial3: true,
       ),
 
@@ -38,7 +40,10 @@ class _DataInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     // Aqui eu deixo somente os números digitados.
-    String numeros = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+    String numeros = newValue.text.replaceAll(
+      RegExp(r'[^0-9]'),
+      '',
+    );
 
     // A data pode ter no máximo 8 números: DDMMAAAA.
     if (numeros.length > 8) {
@@ -50,7 +55,8 @@ class _DataInputFormatter extends TextInputFormatter {
     if (numeros.length <= 2) {
       dataFormatada = numeros;
     } else if (numeros.length <= 4) {
-      dataFormatada = '${numeros.substring(0, 2)}/${numeros.substring(2)}';
+      dataFormatada =
+          '${numeros.substring(0, 2)}/${numeros.substring(2)}';
     } else {
       dataFormatada =
           '${numeros.substring(0, 2)}/${numeros.substring(2, 4)}/${numeros.substring(4)}';
@@ -58,7 +64,9 @@ class _DataInputFormatter extends TextInputFormatter {
 
     return TextEditingValue(
       text: dataFormatada,
-      selection: TextSelection.collapsed(offset: dataFormatada.length),
+      selection: TextSelection.collapsed(
+        offset: dataFormatada.length,
+      ),
     );
   }
 }
@@ -69,7 +77,10 @@ class RegistroChuva {
   final String data;
   final double milimetros;
 
-  RegistroChuva({required this.data, required this.milimetros});
+  RegistroChuva({
+    required this.data,
+    required this.milimetros,
+  });
 }
 
 // Essa é a tela principal.
@@ -78,10 +89,12 @@ class RegistroChuvaPage extends StatefulWidget {
   const RegistroChuvaPage({super.key});
 
   @override
-  State<RegistroChuvaPage> createState() => _RegistroChuvaPageState();
+  State<RegistroChuvaPage> createState() =>
+      _RegistroChuvaPageState();
 }
 
-class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
+class _RegistroChuvaPageState
+    extends State<RegistroChuvaPage> {
   // Esses controladores pegam o que o usuário digita nos campos.
   final _dataController = TextEditingController();
   final _chuvaController = TextEditingController();
@@ -93,12 +106,16 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
   String? _erro;
 
   // Essa mensagem muda enquanto a pessoa digita a quantidade de chuva.
-  String _mensagemChuva = 'Informe a quantidade de chuva medida em milímetros.';
+  String _mensagemChuva =
+      'Informe a quantidade de chuva medida em milímetros.';
 
   // Aqui eu calculo o total de chuva de todos os registros.
   // O fold percorre a lista e vai somando os valores.
   double get _totalChuva {
-    return _registros.fold(0.0, (soma, registro) => soma + registro.milimetros);
+    return _registros.fold(
+      0.0,
+      (soma, registro) => soma + registro.milimetros,
+    );
   }
 
   // Aqui eu calculo a média de chuva dos registros.
@@ -122,13 +139,17 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
 
     setState(() {
       if (valor.trim().isEmpty) {
-        _mensagemChuva = 'Informe a quantidade de chuva medida em milímetros.';
+        _mensagemChuva =
+            'Informe a quantidade de chuva medida em milímetros.';
       } else if (numero == null) {
-        _mensagemChuva = 'Digite apenas um valor numérico.';
+        _mensagemChuva =
+            'Digite apenas um valor numérico.';
       } else if (numero < 0) {
-        _mensagemChuva = 'A chuva não pode ter valor negativo.';
+        _mensagemChuva =
+            'A chuva não pode ter valor negativo.';
       } else {
-        _mensagemChuva = 'Leitura válida: ${numero.toStringAsFixed(1)} mm';
+        _mensagemChuva =
+            'Leitura válida: ${numero.toStringAsFixed(1)} mm';
       }
     });
   }
@@ -139,7 +160,8 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
     final data = _dataController.text.trim();
 
     // Pego a quantidade de chuva digitada.
-    final textoChuva = _chuvaController.text.trim().replaceAll(',', '.');
+    final textoChuva =
+        _chuvaController.text.trim().replaceAll(',', '.');
 
     // Tento transformar o valor digitado em número.
     final chuva = double.tryParse(textoChuva);
@@ -156,7 +178,8 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
     // Aqui verifico se o valor digitado realmente é um número.
     if (chuva == null) {
       setState(() {
-        _erro = 'Informe um valor numérico válido para a chuva.';
+        _erro =
+            'Informe um valor numérico válido para a chuva.';
       });
 
       return;
@@ -165,7 +188,8 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
     // Aqui não deixo colocar chuva negativa.
     if (chuva < 0) {
       setState(() {
-        _erro = 'O valor da chuva não pode ser negativo.';
+        _erro =
+            'O valor da chuva não pode ser negativo.';
       });
 
       return;
@@ -173,7 +197,12 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
 
     // Se estiver tudo certo, adiciono o registro na lista.
     setState(() {
-      _registros.add(RegistroChuva(data: data, milimetros: chuva));
+      _registros.add(
+        RegistroChuva(
+          data: data,
+          milimetros: chuva,
+        ),
+      );
 
       // Depois de adicionar, tiro qualquer mensagem de erro.
       _erro = null;
@@ -182,7 +211,8 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
       _dataController.clear();
       _chuvaController.clear();
 
-      _mensagemChuva = 'Informe a quantidade de chuva medida em milímetros.';
+      _mensagemChuva =
+          'Informe a quantidade de chuva medida em milímetros.';
     });
   }
 
@@ -203,7 +233,8 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
       _dataController.clear();
       _chuvaController.clear();
 
-      _mensagemChuva = 'Informe a quantidade de chuva medida em milímetros.';
+      _mensagemChuva =
+          'Informe a quantidade de chuva medida em milímetros.';
     });
   }
 
@@ -254,7 +285,10 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
             // Texto explicando o que essa tela faz.
             const Text(
               'Pluviômetro digital para registros do Vale de São Patrício.',
-              style: TextStyle(fontSize: 15, color: Colors.black54),
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black54,
+              ),
             ),
 
             const SizedBox(height: 24),
@@ -267,7 +301,9 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
               keyboardType: TextInputType.number,
 
               // Aqui uso a regra que coloca as barras automaticamente.
-              inputFormatters: [_DataInputFormatter()],
+              inputFormatters: [
+                _DataInputFormatter(),
+              ],
 
               decoration: const InputDecoration(
                 labelText: 'Data da medição',
@@ -279,6 +315,7 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
                 border: OutlineInputBorder(),
               ),
             ),
+
             const SizedBox(height: 16),
 
             // Campo onde o produtor informa quantos milímetros choveram.
@@ -286,7 +323,8 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
               controller: _chuvaController,
 
               // Aqui deixo o teclado preparado para números.
-              keyboardType: const TextInputType.numberWithOptions(
+              keyboardType:
+                  const TextInputType.numberWithOptions(
                 decimal: true,
               ),
 
@@ -296,7 +334,10 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
               decoration: const InputDecoration(
                 labelText: 'Chuva medida (mm)',
                 hintText: 'Ex.: 12,5',
-                prefixIcon: Icon(Icons.water_drop, color: Color(0xFF2E7D32)),
+                prefixIcon: Icon(
+                  Icons.water_drop,
+                  color: Color(0xFF2E7D32),
+                ),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -307,9 +348,10 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
             Text(
               _mensagemChuva,
               style: TextStyle(
-                color: _mensagemChuva.startsWith('Leitura válida')
-                    ? const Color(0xFF2E7D32)
-                    : Colors.black54,
+                color:
+                    _mensagemChuva.startsWith('Leitura válida')
+                        ? const Color(0xFF2E7D32)
+                        : Colors.black54,
               ),
             ),
 
@@ -325,14 +367,19 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.error_outline, color: Color(0xFFC62828)),
+                    const Icon(
+                      Icons.error_outline,
+                      color: Color(0xFFC62828),
+                    ),
 
                     const SizedBox(width: 10),
 
                     Expanded(
                       child: Text(
                         _erro!,
-                        style: const TextStyle(color: Color(0xFFC62828)),
+                        style: const TextStyle(
+                          color: Color(0xFFC62828),
+                        ),
                       ),
                     ),
                   ],
@@ -342,39 +389,19 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
 
             const SizedBox(height: 20),
 
-            // Aqui ficam os botões de registrar e limpar.
-            Row(
-              children: [
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: _adicionarRegistro,
-                    icon: const Icon(Icons.add),
-                    label: const Text('Registrar chuva'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF2E7D32),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                  ),
+            // Aqui fica o botão principal para registrar a chuva.
+            FilledButton.icon(
+              onPressed: _adicionarRegistro,
+              icon: const Icon(Icons.add),
+              label: const Text('Registrar chuva'),
+              style: FilledButton.styleFrom(
+                backgroundColor:
+                    const Color(0xFF2E7D32),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
                 ),
-
-                const SizedBox(width: 12),
-
-                OutlinedButton(
-                  // O botão só fica disponível se existir algum registro.
-                  onPressed: _registros.isEmpty ? null : _limparTudo,
-
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF2E7D32),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16,
-                      horizontal: 16,
-                    ),
-                  ),
-
-                  child: const Text('Limpar'),
-                ),
-              ],
+              ),
             ),
 
             const SizedBox(height: 28),
@@ -415,23 +442,42 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
 
             const SizedBox(height: 28),
 
-            // Título da lista de registros.
+            // Aqui fica o título da lista e o botão para limpar.
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Registros',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
+                const Expanded(
+                  child: Text(
+                    'Registros',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1B5E20),
+                    ),
                   ),
                 ),
 
-                // Aqui mostro quantos registros já foram feitos.
+                // Mostra quantos registros já foram feitos.
                 Text(
                   '${_registros.length} registro(s)',
-                  style: const TextStyle(color: Colors.black54),
+                  style: const TextStyle(
+                    color: Colors.black54,
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                // O botão fica perto da lista porque limpa os registros.
+                OutlinedButton.icon(
+                  onPressed:
+                      _registros.isEmpty ? null : _limparTudo,
+                  icon: const Icon(
+                    Icons.delete_sweep_outlined,
+                  ),
+                  label: const Text('Limpar'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor:
+                        const Color(0xFF2E7D32),
+                  ),
                 ),
               ],
             ),
@@ -444,22 +490,28 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1F8E9),
-                  border: Border.all(color: const Color(0xFFA5D6A7)),
+                  border: Border.all(
+                    color: const Color(0xFFA5D6A7),
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
                   'Nenhuma medição registrada ainda.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black54),
+                  style: TextStyle(
+                    color: Colors.black54,
+                  ),
                 ),
               )
+
             // Se tiver registros, monto a lista.
             else
               ListView.separated(
                 shrinkWrap: true,
 
                 // A rolagem fica por conta da tela principal.
-                physics: const NeverScrollableScrollPhysics(),
+                physics:
+                    const NeverScrollableScrollPhysics(),
 
                 itemCount: _registros.length,
 
@@ -479,15 +531,19 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
 
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: const Color(0xFFC8E6C9)),
-                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: const Color(0xFFC8E6C9),
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(10),
                     ),
 
                     child: Row(
                       children: [
                         // Ícone da chuva.
                         const CircleAvatar(
-                          backgroundColor: Color(0xFFE8F5E9),
+                          backgroundColor:
+                              Color(0xFFE8F5E9),
                           child: Icon(
                             Icons.water_drop,
                             color: Color(0xFF2E7D32),
@@ -499,20 +555,26 @@ class _RegistroChuvaPageState extends State<RegistroChuvaPage> {
                         // Aqui mostro a data e a quantidade de chuva.
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
                             children: [
                               Text(
                                 registro.data,
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight:
+                                      FontWeight.bold,
                                 ),
                               ),
 
                               const SizedBox(height: 2),
 
                               Text(
-                                _formatarMm(registro.milimetros),
-                                style: const TextStyle(color: Colors.black54),
+                                _formatarMm(
+                                  registro.milimetros,
+                                ),
+                                style: const TextStyle(
+                                  color: Colors.black54,
+                                ),
                               ),
                             ],
                           ),
@@ -563,16 +625,27 @@ class _CardResumo extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFE8F5E9),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFA5D6A7)),
+        border: Border.all(
+          color: const Color(0xFFA5D6A7),
+        ),
       ),
 
       child: Column(
         children: [
-          Icon(icone, color: const Color(0xFF2E7D32), size: 28),
+          Icon(
+            icone,
+            color: const Color(0xFF2E7D32),
+            size: 28,
+          ),
 
           const SizedBox(height: 8),
 
-          Text(titulo, style: const TextStyle(color: Colors.black54)),
+          Text(
+            titulo,
+            style: const TextStyle(
+              color: Colors.black54,
+            ),
+          ),
 
           const SizedBox(height: 4),
 
